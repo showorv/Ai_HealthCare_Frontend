@@ -34,7 +34,7 @@ const Specialities = () => {
     <section className="py-24 mt-24 md:mt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-          <div>
+          <div className='flex flex-col justify-center items-center mx-auto'>
             <h2 className="text-3xl font-bold text-foreground">Our Specialist</h2>
             <p className="text-muted-foreground max-w-md mt-2">
               Access to medical experts across all major specialities.
