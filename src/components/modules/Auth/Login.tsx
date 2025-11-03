@@ -71,7 +71,7 @@ export default function Login() {
 
           switch(role){
             case "ADMIN":
-              router.push("/dashboard/admin");
+              router.push("/dashboard");
               break;
             case "DOCTOR":
               router.push("/dashboard/doctor");
