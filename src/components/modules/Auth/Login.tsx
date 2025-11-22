@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 
 
@@ -9,6 +9,7 @@ import { loginUser } from "@/service/auth/loginUser";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const [state, formAction, isPending] = useActionState(loginUser, null);
@@ -22,6 +23,13 @@ const LoginForm = () => {
     }
   };
   console.log(state);
+
+  useEffect(() => {
+    if (state && !state.success && state.message) {
+      toast.error(state.message);
+    }
+  }, [state]);
+  
   return (
     <form action={formAction}>
       <FieldGroup>
