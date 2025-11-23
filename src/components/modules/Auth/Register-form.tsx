@@ -2,13 +2,14 @@
 "use client";
 
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 
 import { registerPatient } from "@/service/auth/registerPaitent";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const RegisterForm = () => {
   const [state, formAction, isPending] = useActionState(registerPatient, null);
@@ -26,6 +27,13 @@ const RegisterForm = () => {
       return null;
     }
   };
+
+  useEffect(() => {
+    if (state && !state.success && state.message) {
+      toast.error(state.message);
+    }
+  }, [state]);
+  
   return (
     <form action={formAction}>
       <FieldGroup>
