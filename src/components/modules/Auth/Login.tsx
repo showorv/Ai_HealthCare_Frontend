@@ -10,19 +10,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { toast } from "sonner";
+import InputFieldError from "@/components/shared/InputFieldError";
 
 const LoginForm = () => {
   const [state, formAction, isPending] = useActionState(loginUser, null);
 
-  const getFieldError = (fieldName: string) => {
-    if (state && state.errors) {
-      const error = state.errors.find((err: any) => err.field === fieldName);
-      return error.message;
-    } else {
-      return null;
-    }
-  };
-  console.log(state);
+  // const getFieldError = (fieldName: string) => {
+  //   if (state && state.errors) {
+  //     const error = state.errors.find((err: any) => err.field === fieldName);
+  //     return error.message;
+  //   } else {
+  //     return null;
+  //   }
+  // };
+  // console.log(state);
 
   useEffect(() => {
     if (state && !state.success && state.message) {
@@ -45,11 +46,12 @@ const LoginForm = () => {
               //   required
             />
 
-            {getFieldError("email") && (
+            {/* {getFieldError("email") && (
               <FieldDescription className="text-red-600">
                 {getFieldError("email")}
               </FieldDescription>
-            )}
+            )} */}
+            <InputFieldError field="email" state={state}/>
           </Field>
 
           {/* Password */}
@@ -62,11 +64,12 @@ const LoginForm = () => {
               placeholder="Enter your password"
               //   required
             />
-            {getFieldError("password") && (
+            {/* {getFieldError("password") && (
               <FieldDescription className="text-red-600">
                 {getFieldError("password")}
               </FieldDescription>
-            )}
+            )} */}
+             <InputFieldError field="password" state={state}/>
           </Field>
         </div>
         <FieldGroup className="mt-4">

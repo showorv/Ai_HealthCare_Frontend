@@ -3,8 +3,10 @@
 
 import z from "zod";
 import { loginUser } from "./loginUser";
+import { serverFetch } from "@/lib/server-fetch";
+import { zodValidator } from "@/lib/zodValidator";
 
-const registerValidationZodSchema = z.object({
+const registerPatientValidationZodSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     address: z.string().optional(),
     email: z.email({ message: "Valid email is required" }),
@@ -25,7 +27,7 @@ const registerValidationZodSchema = z.object({
 export const registerPatient = async (_currentState: any, formData: any): Promise<any> => {
     try {
         console.log(formData.get("address"));
-        const validationData = {
+        const payload = {
             name: formData.get('name'),
             address: formData.get('address'),
             email: formData.get('email'),
@@ -33,29 +35,42 @@ export const registerPatient = async (_currentState: any, formData: any): Promis
             confirmPassword: formData.get('confirmPassword'),
         }
 
-        const validatedFields = registerValidationZodSchema.safeParse(validationData);
+        // const validatedFields = registerValidationZodSchema.safeParse(validationData);
 
-        console.log(validatedFields, "val");
+        // console.log(validatedFields, "val");
 
-        if (!validatedFields.success) {
-            return {
-                success: false,
-                errors: validatedFields.error.issues.map(issue => {
-                    return {
-                        field: issue.path[0],
-                        message: issue.message,
-                    }
-                }
-                )
-            }
+        // if (!validatedFields.success) {
+        //     return {
+        //         success: false,
+        //         errors: validatedFields.error.issues.map(issue => {
+        //             return {
+        //                 field: issue.path[0],
+        //                 message: issue.message,
+        //             }
+        //         }
+        //         )
+        //     }
+        // }
+
+        // const registerData = {
+        //     password: formData.get('password'),
+        //     paitent: {
+        //         name: formData.get('name'),
+        //         address: formData.get('address'),
+        //         email: formData.get('email'),
+        //     }
+        // }
+        if (zodValidator(payload, registerPatientValidationZodSchema).success === false) {
+            return zodValidator(payload, registerPatientValidationZodSchema);
         }
 
+        const validatedPayload: any = zodValidator(payload, registerPatientValidationZodSchema).data;
         const registerData = {
-            password: formData.get('password'),
-            paitent: {
-                name: formData.get('name'),
-                address: formData.get('address'),
-                email: formData.get('email'),
+            password: validatedPayload.password,
+            patient: {
+                name: validatedPayload.name,
+                address: validatedPayload.address,
+                email: validatedPayload.email,
             }
         }
 
@@ -63,8 +78,12 @@ export const registerPatient = async (_currentState: any, formData: any): Promis
 
         newFormData.append("data", JSON.stringify(registerData));
 
-        const res = await fetch("http://localhost:4000/api/v1/user/create-paitent", {
-            method: "POST",
+        // const res = await fetch("http://localhost:4000/api/v1/user/create-paitent", {
+        //     method: "POST",
+        //     body: newFormData,
+        // })
+        const res = await serverFetch.post("/user/create-paitent", {
+         
             body: newFormData,
         })
 
