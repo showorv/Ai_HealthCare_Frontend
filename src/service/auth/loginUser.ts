@@ -124,6 +124,7 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
             throw new Error("Invalid token");
 
         }
+        
 
         const userRole: UserRole = verifiedToken.role;
 

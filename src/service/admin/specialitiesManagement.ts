@@ -27,7 +27,7 @@ export async function createSpeciality(_prevState: any, formData: FormData) {
             newFormData.append("file", formData.get("file") as Blob)
         }
 
-        const response = await serverFetch.post("/specialties", {
+        const response = await serverFetch.post("/specialist/create", {
             body: newFormData,
         })
 
@@ -43,7 +43,7 @@ export async function createSpeciality(_prevState: any, formData: FormData) {
 
 export async function getSpecialities() {
     try {
-        const response = await serverFetch.get("/specialties")
+        const response = await serverFetch.get("/specialist")
         const result = await response.json();
         return result;
     } catch (error: any) {

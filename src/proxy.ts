@@ -16,18 +16,37 @@ export async function proxy(request: NextRequest) {
     const accessToken = request.cookies.get("accessToken")?.value || null;
 
     let userRole: UserRole | null = null;
+    // if (accessToken) {
+    //     const verifiedToken: JwtPayload | string = jwt.verify(accessToken, process.env.JWT_SECRET as string);
+
+    //     if (typeof verifiedToken === "string") {
+    //         // cookieStore.delete("accessToken");
+    //         // cookieStore.delete("refreshToken");
+    //         await deleteCookie("accessToken")
+    //         await deleteCookie("refreshToken")
+    //         return NextResponse.redirect(new URL('/login', request.url));
+    //     }
+
+    //     userRole = verifiedToken.role;
+    // }
     if (accessToken) {
-        const verifiedToken: JwtPayload | string = jwt.verify(accessToken, process.env.JWT_SECRET as string);
+        try {
+            const verifiedToken = jwt.verify(
+                accessToken,
+                process.env.JWT_SECRET as string
+            ) as JwtPayload;
 
-        if (typeof verifiedToken === "string") {
-            // cookieStore.delete("accessToken");
-            // cookieStore.delete("refreshToken");
-            await deleteCookie("accessToken")
-            await deleteCookie("refreshToken")
-            return NextResponse.redirect(new URL('/login', request.url));
+            userRole = verifiedToken.role as UserRole;
+
+        } catch (err: any) {
+            // 🔥 Token expired OR invalid
+            if (err.name === "TokenExpiredError") {
+                await deleteCookie("accessToken");
+                await deleteCookie("refreshToken");
+            }
+
+            return NextResponse.redirect(new URL("/login", request.url));
         }
-
-        userRole = verifiedToken.role;
     }
 
     const routerOwner = getRouteOwner(pathname);
