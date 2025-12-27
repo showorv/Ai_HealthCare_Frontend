@@ -17,7 +17,8 @@ export interface IDoctor {
     averageRating?: number;
     createdAt?: string;
     updatedAt?: string;
-    doctorSpecialties?: Array<{
+    doctorSpecialist?: Array<{
+        specialitiesId?: string
         specialties?: {
             id: string;
             title: string;
