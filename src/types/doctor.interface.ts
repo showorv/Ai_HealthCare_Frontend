@@ -1,3 +1,5 @@
+import { ISpecialty } from "./speciality.interface";
+
 export interface IDoctor {
     id?: string;
     name: string;
@@ -11,8 +13,10 @@ export interface IDoctor {
     appointmentFee: number;
     qualification: string;
     currentWorkingPlace: string;
+    specialities: string[]
+    removeSpecialties?: string[];
     designation: string;
-    profilePhoto?: string;
+    profilePhoto?: File;
     isDeleted?: boolean;
     averageRating?: number;
     createdAt?: string;
