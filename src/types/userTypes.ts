@@ -1,7 +1,19 @@
-export interface userInterface {
+
+import { IAdmin } from "./admin.interface";
+import { UserRole } from "./authTypeProxy";
+import { IDoctor } from "./doctor.interface";
+import { IPatient } from "./patient.interface";
+
+export interface UserInfo {
     id: string;
+    name: string;
     email: string;
-    role: "ADMIN" | "DOCTOR" | "PATIENT";
-    exp: number;
-    iat: number;
-  }
+    role: UserRole;
+    needPasswordChange: boolean;
+    status: "ACTIVE" | "BLOCKED" | "DELETED";
+    admin?: IAdmin;
+    patient?: IPatient;
+    doctor?: IDoctor;
+    createdAt: string;
+    updatedAt: string;
+}

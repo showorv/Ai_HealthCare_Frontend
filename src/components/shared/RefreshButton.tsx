@@ -16,12 +16,11 @@ const RefreshButton = ({
   showLabel = true,
 }: RefreshButtonProps) => {
   const router = useRouter();
-
-  const [isPending, startTransition] = useTransition(); // use for laod the ui in background.
+  const [isPending, startTransition] = useTransition();
 
   const handleRefresh = () => {
     startTransition(() => {
-      router.refresh();
+      router.push(window.location.pathname);
     });
   };
   return (
