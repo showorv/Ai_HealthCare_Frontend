@@ -93,10 +93,10 @@ export async function resetPassword(_prevState: any, formData: FormData) {
                 id: user?.id,
                 password: validationPayload.newPassword,
             }),
-            headers: {
-                "Authorization": accessToken,
-                "Content-Type": "application/json",
-            },
+            // headers: {
+            //     "Authorization": accessToken,
+            //     "Content-Type": "application/json",
+            // },
         });
 
         const result = await response.json();
